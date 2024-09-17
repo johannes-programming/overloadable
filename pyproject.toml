@@ -21,7 +21,7 @@ keywords = []
 name = "overloadable"
 readme = "README.rst"
 requires-python = ">=3.10"
-version = "1.0.1"
+version = "1.0.2"
 
 [project.license]
 file = "LICENSE.txt"
