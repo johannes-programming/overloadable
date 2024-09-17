@@ -64,14 +64,12 @@ Example
         def foo(self, x):
             if type(x) is int:
                 return "int"
-            else:
-                return "else"
 
         @foo.overload("int")
         def foo(self, x):
             return x * x + self.addon
 
-        @foo.overload("else")
+        @foo.overload() # key=None
         def foo(self, x):
             return str(x)[::-1]
 
