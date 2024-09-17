@@ -23,7 +23,7 @@ def overloadable(old, /):
     return new
 
 
-def tool(key, **kwargs):
+def tool(key=None, **kwargs):
     return functools.partial(decorator, key=key, **kwargs)
 
 
