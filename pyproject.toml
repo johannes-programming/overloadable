@@ -9,18 +9,19 @@ authors = [
     { email = "johannes-programming@mailfence.com", name = "Johannes" },
 ]
 classifiers = [
+    "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
 ]
 dependencies = []
-description = "overloadable"
+description = "Create an overloaded function around a core choosing function."
 keywords = []
 name = "overloadable"
 readme = "README.rst"
-requires-python = ">=3.12.4"
-version = "0.0.1"
+requires-python = ">=3.10"
+version = "1.0.0"
 
 [project.license]
 file = "LICENSE.txt"
