@@ -26,7 +26,7 @@ def overloadable(
 
     @bind
     @functools.wraps(func)
-    def new(*args, **kwargs):
+    def new(*args, **kwargs) -> Any:
         key = func(*args, **kwargs)
         value = holder._data.lookup[key]
         ans = value(*args, **kwargs)
