@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>overloadable</title>
+        <link rel="stylesheet" href="https://www.johannes-programming.online/styles.css">
+    </head>
+    <body>
+        <div id="top"></div>
+        <div id="overview">
+            <h2>Overview</h2>
+            <p>Create an overloaded function around a core choosing function.</p>
+        </div>
+        <div id="install"></div>
+        <div id="implement">
+            <h2>Implementation</h2>
+            <pre><code>
+import functools
+from typing import *
+
+__all__ = ["overloadable"]
+
+class Holder: ...
+
+def identity(old: Any, /) -&gt; Any:
+    return old
+
+def overloadable(
+    old: Callable,
+    /,
+) -&gt; Callable:
+    holder = Holder()
+    try:
+        func = old.__func__
+    except AttributeError:
+        func = old
+        bind = identity
+    else:
+        bind = type(old)
+
+    @bind
+    @functools.wraps(func)
+    def new(*args, **kwargs) -&gt; Any:
+        key = func(*args, **kwargs)
+        value = holder._data.lookup[key]
+        ans = value(*args, **kwargs)
+        return ans
+
+    holder._data = new
+    new.lookup = dict()
+    new.overload = functools.partial(
+        overloadtool,
+        bind=bind,
+        data=new,
+    )
+    return new
+
+def overloaddecorator(
+    old: Callable,
+    /,
+    *,
+    bind: Callable,
+    data: Any,
+    key: Hashable,
+) -&gt; Any:
+    data.lookup[key] = old
+    overload(bind(old))
+    return data
+
+def overloadtool(
+    key: Hashable = None,
+    **kwargs,
+) -&gt; Any:
+    return functools.partial(
+        overloaddecorator,
+        key=key,
+        **kwargs,
+    )
+    
+</code></pre>
+        </div>
+        <div id="example">
+            <h2>Example</h2>
+            <pre><code>
+from overloadable import overloadable
+
+class Bar:
+    def __init__(self, addon) -&gt; None:
+        self.addon = addon
+
+    @overloadable
+    def foo(self, x):
+        if type(x) is int:
+            return "int"
+
+    @foo.overload("int")
+    def foo(self, x):
+        return x * x + self.addon
+
+    @foo.overload() # key=None
+    def foo(self, x):
+        return str(x)[::-1]
+
+bar = Bar(42)
+print(bar.foo(1)) # prints 43
+print(bar.foo(3.14)) # prints 41.3
+print(bar.foo("baz")) # prints zab
+
+</code></pre>
+        </div>
+        <div id="testing"></div>
+        <div id="license"></div>
+        <div id="links"></div>
+        <div id="credits"></div>
+    </body>
+        <script src="https://www.johannes-programming.online/script.js"></script>
+        <script>
+            setupBasicProject('overloadable');
+        </script>
+</html>
