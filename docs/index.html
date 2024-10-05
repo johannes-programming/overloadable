@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>overloadable</title>
+    <link rel="stylesheet" href="https://www.johannes-programming.online/styles.css">
+</head>
+<body>
+
+<h1>overloadable</h1>
+
+<h2>Overview</h2>
+<p>Create an overloaded function around a core choosing function.</p>
+
+<h2>Installation</h2>
+<p>To install <code>overloadable</code>, you can use <code>pip</code>. Open your terminal and run:</p>
+
+<pre><code>pip install overloadable</code></pre>
+
+<h2>Implementation</h2>
+<pre><code>import functools
+from typing import *
+
+__all__ = ["overloadable"]
+
+class Holder: ...
+
+def identity(old: Any, /) -&gt; Any:
+    return old
+
+def overloadable(
+    old: Callable,
+    /,
+) -&gt; Callable:
+    holder = Holder()
+    try:
+        func = old.__func__
+    except AttributeError:
+        func = old
+        bind = identity
+    else:
+        bind = type(old)
+
+    @bind
+    @functools.wraps(func)
+    def new(*args, **kwargs) -&gt; Any:
+        key = func(*args, **kwargs)
+        value = holder._data.lookup[key]
+        ans = value(*args, **kwargs)
+        return ans
+
+    holder._data = new
+    new.lookup = dict()
+    new.overload = functools.partial(
+        overloadtool,
+        bind=bind,
+        data=new,
+    )
+    return new
+
+def overloaddecorator(
+    old: Callable,
+    /,
+    *,
+    bind: Callable,
+    data: Any,
+    key: Hashable,
+) -&gt; Any:
+    data.lookup[key] = old
+    overload(bind(old))
+    return data
+
+def overloadtool(
+    key: Hashable = None,
+    **kwargs,
+) -&gt; Any:
+    return functools.partial(
+        overloaddecorator,
+        key=key,
+        **kwargs,
+    )
+</code></pre>
+
+<h2>Example</h2>
+<pre><code>from overloadable import overloadable
+
+class Bar:
+    def __init__(self, addon) -&gt; None:
+        self.addon = addon
+
+    @overloadable
+    def foo(self, x):
+        if type(x) is int:
+            return "int"
+
+    @foo.overload("int")
+    def foo(self, x):
+        return x * x + self.addon
+
+    @foo.overload() # key=None
+    def foo(self, x):
+        return str(x)[::-1]
+
+bar = Bar(42)
+print(bar.foo(1)) # prints 43
+print(bar.foo(3.14)) # prints 41.3
+print(bar.foo("baz")) # prints zab
+</code></pre>
+
+<h2>License</h2>
+<p>This project is licensed under the MIT License.</p>
+
+<h2>Links</h2>
+<ul>
+    <li><a href="https://overloadable.johannes-programming.online">Documentation</a></li>
+    <li><a href="https://pypi.org/project/overloadable/#files">Download</a></li>
+    <li><a href="https://pypi.org/project/overloadable/">Index</a></li>
+    <li><a href="https://github.com/johannes-programming/overloadable">Source</a></li>
+</ul>
+
+<h2>Credits</h2>
+<ul>
+    <li>
+        Author: 
+        <a href="https://www.johannes-programming.online">
+            Johannes
+        </a>
+    </li>
+    <li>
+        Email: 
+        <a href="mailto:johannes-programming@mailfence.com">
+            johannes-programming@mailfence.com
+        </a>
+    </li>
+</ul>
+
+<p>Thank you for using <code>overloadable</code>!</p>
+
+</body>
+</html>
