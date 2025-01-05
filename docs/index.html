@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <title>overloadable</title>
     </head>
@@ -10,73 +10,79 @@
                 <dl class="heading1">
                     <dt id="intro">Introduction</dt>
                     <dd>
-                        <p>Create an overloaded function around a core choosing function.</p>
+                        <p>This project allows to create an overloaded function around a core choosing function.</p>
                     </dd>
                     <dt id="install">Installation</dt>
                     <dd id="installCorpus"></dd>
                     <dt id="implement">Implementation</dt>
                     <dd>
-                        <pre class="block"><code>import functools
+                        <pre class="block"><code>import dataclasses
+import functools
+import types
 from typing import *
+
+import tofunc
 
 __all__ = ["overloadable"]
 
-class Holder: ...
 
-def identity(old: Any, /) -&gt; Any:
-    return old
+def identity(value: Any, /) -> Any:
+    return value
 
-def overloadable(
-    old: Callable,
-    /,
-) -&gt; Callable:
-    holder = Holder()
-    try:
-        func = old.__func__
-    except AttributeError:
-        func = old
-        bind = identity
-    else:
-        bind = type(old)
 
-    @bind
-    @functools.wraps(func)
-    def new(*args, **kwargs) -&gt; Any:
-        key = func(*args, **kwargs)
-        value = holder._data.lookup[key]
-        ans = value(*args, **kwargs)
+def overloadable(dispatch: Any) -> types.FunctionType:
+    return Data(dispatch).ans
+
+
+class Data:
+    def __init__(self, value: Any, /) -> None:
+        self.ans = self.makeans(value)
+
+    def ans_1(self, *args: Any, **kwargs: Any) -> Any:
+        key = self.ans.dispatch(*args, **kwargs)
+        return self.ans.lookup[key](*args, **kwargs)
+
+    def makeans(self, value: Any, /) -> Any:
+        unpack = Unpack.byValue(value)
+        ans = tofunc.tofunc(self.ans_1)
+        functools.wraps(unpack.func)(ans)
+        ans = unpack.kind(ans)
+        ans._data = self
+        ans.lookup = dict()
+        ans.dispatch = unpack.func
+        ans.overload = tofunc.tofunc(self.overload_1)
+        functools.wraps(self.overload_1)(ans.overload)
         return ans
 
-    holder._data = new
-    new.lookup = dict()
-    new.overload = functools.partial(
-        overloadtool,
-        bind=bind,
-        data=new,
-    )
-    return new
+    def overload_1(self, key: Any = None) -> Any:
+        return Overload(ans=self.ans, key=key)
 
-def overloaddecorator(
-    old: Callable,
-    /,
-    *,
-    bind: Callable,
-    data: Any,
-    key: Hashable,
-) -&gt; Any:
-    data.lookup[key] = old
-    overload(bind(old))
-    return data
 
-def overloadtool(
-    key: Hashable = None,
-    **kwargs,
-) -&gt; Any:
-    return functools.partial(
-        overloaddecorator,
-        key=key,
-        **kwargs,
-    )</code></pre>
+@dataclasses.dataclass(frozen=True)
+class Overload:
+    ans: Any
+    key: Any
+
+    def __call__(self, value: Any) -> Any:
+        self.ans.lookup[self.key] = value
+        return self.ans
+
+
+@dataclasses.dataclass(frozen=True)
+class Unpack:
+    kind: Any
+    func: Any
+
+    @classmethod
+    def byValue(cls, value: Any):
+        try:
+            func = value.__func__
+        except AttributeError:
+            func = value
+            kind = identity
+        else:
+            kind = type(value)
+        return cls(kind=kind, func=func)</code></pre>
                     </dd>
                     <dt id="example">Example</dt>
                     <dd>
