@@ -16,13 +16,15 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
 ]
-dependencies = []
+dependencies = [
+    "tofunc>=1.0.0",
+]
 description = "Create an overloaded function around a core choosing function."
 keywords = []
 name = "overloadable"
 readme = "README.rst"
 requires-python = ">=3.8"
-version = "1.0.8"
+version = "1.0.9"
 
 [project.license]
 file = "LICENSE.txt"
