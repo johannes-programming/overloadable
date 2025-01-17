@@ -3,13 +3,10 @@ import functools
 import types
 from typing import *
 
-import tofunc
+from identityfunction import identityfunction
+from tofunc import tofunc
 
 __all__ = ["overloadable"]
-
-
-def identity(value: Any, /) -> Any:
-    return value
 
 
 def overloadable(dispatch: Any) -> types.FunctionType:
@@ -26,13 +23,13 @@ class Data:
 
     def makeans(self, value: Any, /) -> Any:
         unpack = Unpack.byValue(value)
-        ans = tofunc.tofunc(self.ans_1)
+        ans = tofunc(self.ans_1)
         functools.wraps(unpack.func)(ans)
         ans = unpack.kind(ans)
         ans._data = self
         ans.lookup = dict()
         ans.dispatch = unpack.func
-        ans.overload = tofunc.tofunc(self.overload_1)
+        ans.overload = tofunc(self.overload_1)
         functools.wraps(self.overload_1)(ans.overload)
         return ans
 
@@ -61,7 +58,7 @@ class Unpack:
             func = value.__func__
         except AttributeError:
             func = value
-            kind = identity
+            kind = identityfunction
         else:
             kind = type(value)
         return cls(kind=kind, func=func)

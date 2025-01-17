@@ -17,8 +17,10 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
+    "Typing :: Typed",
 ]
 dependencies = [
+    "identityfunction>=1.0",
     "tofunc>=1.0.0",
 ]
 description = "This project allows to create an overloaded function around a core choosing function."
@@ -26,14 +28,13 @@ keywords = []
 name = "overloadable"
 readme = "README.rst"
 requires-python = ">=3.8"
-version = "1.0.9+local"
+version = "1.0.9+local.1"
 
 [project.license]
 file = "LICENSE.txt"
 
 [project.urls]
-Documentation = "https://overloadable.johannes-programming.online/"
 Download = "https://pypi.org/project/overloadable/#files"
-Index = "https://pypi.org/project/overloadable"
-Source = "https://github.com/johannes-programming/overloadable"
+Index = "https://pypi.org/project/overloadable/"
+Source = "https://github.com/johannes-programming/overloadable/"
 Website = "https://overloadable.johannes-programming.online/"
