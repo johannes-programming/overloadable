@@ -10,6 +10,7 @@ __all__ = ["overloadable"]
 
 
 def overloadable(dispatch: Any) -> types.FunctionType:
+    "This function returns an overloadable."
     return Data(dispatch).ans
 
 
