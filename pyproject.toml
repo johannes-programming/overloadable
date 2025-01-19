@@ -21,14 +21,14 @@ classifiers = [
 ]
 dependencies = [
     "identityfunction>=1.0",
-    "tofunc>=1.0.0",
+    "tofunc>=1.0",
 ]
 description = "This project allows to create an overloaded function around a core choosing function."
 keywords = []
 name = "overloadable"
 readme = "README.rst"
 requires-python = ">=3.8"
-version = "1.0.9+local.2"
+version = "1.0.9+local.3"
 
 [project.license]
 file = "LICENSE.txt"
