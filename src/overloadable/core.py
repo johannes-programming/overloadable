@@ -16,6 +16,7 @@ def overloadable(dispatch: Any) -> types.FunctionType:
 
 class Data:
     def __init__(self, value: Any, /) -> None:
+        "This method sets up the current instance."
         self.ans = self.makeans(value)
 
     def ans_1(self, *args: Any, **kwargs: Any) -> Any:
