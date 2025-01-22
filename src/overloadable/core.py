@@ -20,6 +20,7 @@ class Data:
         self.ans = self.makeans(value)
 
     def ans_1(self, *args: Any, **kwargs: Any) -> Any:
+        "This method is used to make the overloadable."
         key = self.ans.dispatch(*args, **kwargs)
         return self.ans.lookup[key](*args, **kwargs)
 
