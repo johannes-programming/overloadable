@@ -25,6 +25,7 @@ class Data:
         return self.ans.lookup[key](*args, **kwargs)
 
     def makeans(self, value: Any, /) -> Any:
+        "This method creates the overloadable."
         unpack = Unpack.byValue(value)
         ans = tofunc(self.ans_1)
         functools.wraps(unpack.func)(ans)
@@ -37,6 +38,7 @@ class Data:
         return ans
 
     def overload_1(self, key: Any = None) -> Any:
+        "This method implements the overloading."
         return Overload(ans=self.ans, key=key)
 
 
@@ -46,6 +48,7 @@ class Overload:
     key: Any
 
     def __call__(self, value: Any) -> Any:
+        "This magic method implements calling the current instance."
         self.ans.lookup[self.key] = value
         return self.ans
 
@@ -56,7 +59,8 @@ class Unpack:
     func: Any
 
     @classmethod
-    def byValue(cls, value: Any):
+    def byValue(cls, value: Any) -> Self:
+        "This classmethod creates a new instance from a dispatch."
         try:
             func = value.__func__
         except AttributeError:
