@@ -1,12 +1,12 @@
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [
-    "setuptools>=61.0.0",
+    "setuptools>=61.0,<62",
 ]
 
 [project]
 authors = [
-    { email = "johannes-programming@mailfence.com", name = "Johannes" },
+    { email = "johannes.programming@gmail.com", name = "Johannes" },
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -20,15 +20,15 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "identityfunction>=1.0",
-    "tofunc>=1.0",
+    "identityfunction>=1.0,<2",
+    "tofunc>=1.0,<2",
 ]
 description = "This project allows to create an overloaded function around a core choosing function."
 keywords = []
 name = "overloadable"
 readme = "README.rst"
-requires-python = ">=3.8"
-version = "1.0.9+local.6"
+requires-python = ">=3.11"
+version = "1.0.9+local.7"
 
 [project.license]
 file = "LICENSE.txt"

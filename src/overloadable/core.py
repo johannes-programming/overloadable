@@ -15,19 +15,20 @@ def overloadable(dispatch: Any) -> types.FunctionType:
 
 
 class Data:
-    def __init__(self, value: Any, /) -> None:
+    def __init__(self: Self, value: Any, /) -> None:
         "This method sets up the current instance."
         self.ans = self.makeans(value)
 
-    def ans_1(self, *args: Any, **kwargs: Any) -> Any:
+    def ans_1(self: Self, *args: Any, **kwargs: Any) -> Any:
         "This method is used to make the overloadable."
-        key = self.ans.dispatch(*args, **kwargs)
-        return self.ans.lookup[key](*args, **kwargs)
+        key: Any = self.ans.dispatch(*args, **kwargs)
+        ans: Any = self.ans.lookup[key](*args, **kwargs)
+        return ans
 
-    def makeans(self, value: Any, /) -> Any:
+    def makeans(self: Self, value: Any, /) -> Any:
         "This method creates the overloadable."
-        unpack = Unpack.byValue(value)
-        ans = tofunc(self.ans_1)
+        unpack: Any = Unpack.byValue(value)
+        ans: Any = tofunc(self.ans_1)
         functools.wraps(unpack.func)(ans)
         ans = unpack.kind(ans)
         ans._data = self
@@ -37,7 +38,7 @@ class Data:
         functools.wraps(self.overload_1)(ans.overload)
         return ans
 
-    def overload_1(self, key: Any = None) -> Any:
+    def overload_1(self: Self, key: Any = None) -> Any:
         "This method implements the overloading."
         return Overload(ans=self.ans, key=key)
 
@@ -47,7 +48,7 @@ class Overload:
     ans: Any
     key: Any
 
-    def __call__(self, value: Any) -> Any:
+    def __call__(self: Self, value: Any) -> Any:
         "This magic method implements calling the current instance."
         self.ans.lookup[self.key] = value
         return self.ans
@@ -59,8 +60,10 @@ class Unpack:
     func: Any
 
     @classmethod
-    def byValue(cls, value: Any) -> Self:
+    def byValue(cls: type, value: Any) -> Self:
         "This classmethod creates a new instance from a dispatch."
+        func: types.FunctionType
+        kind: Callable
         try:
             func = value.__func__
         except AttributeError:
@@ -68,4 +71,5 @@ class Unpack:
             kind = identityfunction
         else:
             kind = type(value)
-        return cls(kind=kind, func=func)
+        ans: Self = cls(kind=kind, func=func)
+        return ans
