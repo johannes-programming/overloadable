@@ -14,98 +14,67 @@
                     </dd>
                     <dt id="install">Installation</dt>
                     <dd id="installCorpus"></dd>
-                    <dt id="implement">Implementation</dt>
+                    <dt id="features">Features</dt>
                     <dd>
-                        <pre class="block"><code>import dataclasses
-import functools
-import types
-from typing import *
-
-import tofunc
-
-__all__ = ["overloadable"]
-
-
-def identity(value: Any, /) -> Any:
-    return value
-
-
-def overloadable(dispatch: Any) -> types.FunctionType:
-    return Data(dispatch).ans
-
-
-class Data:
-    def __init__(self, value: Any, /) -> None:
-        self.ans = self.makeans(value)
-
-    def ans_1(self, *args: Any, **kwargs: Any) -> Any:
-        key = self.ans.dispatch(*args, **kwargs)
-        return self.ans.lookup[key](*args, **kwargs)
-
-    def makeans(self, value: Any, /) -> Any:
-        unpack = Unpack.byValue(value)
-        ans = tofunc.tofunc(self.ans_1)
-        functools.wraps(unpack.func)(ans)
-        ans = unpack.kind(ans)
-        ans._data = self
-        ans.lookup = dict()
-        ans.dispatch = unpack.func
-        ans.overload = tofunc.tofunc(self.overload_1)
-        functools.wraps(self.overload_1)(ans.overload)
-        return ans
-
-    def overload_1(self, key: Any = None) -> Any:
-        return Overload(ans=self.ans, key=key)
-
-
-@dataclasses.dataclass(frozen=True)
-class Overload:
-    ans: Any
-    key: Any
-
-    def __call__(self, value: Any) -> Any:
-        self.ans.lookup[self.key] = value
-        return self.ans
-
-
-@dataclasses.dataclass(frozen=True)
-class Unpack:
-    kind: Any
-    func: Any
-
-    @classmethod
-    def byValue(cls, value: Any):
-        try:
-            func = value.__func__
-        except AttributeError:
-            func = value
-            kind = identity
-        else:
-            kind = type(value)
-        return cls(kind=kind, func=func)</code></pre>
+                        <dl class="heading4">
+                            <dt id="Overloadable">class Overloadable(dispatch: Any)</dt>
+                            <dd>
+                                <p>
+                                    This class is meant as a decorator for a dispatch. 
+                                    Its overloads can be added 
+                                    with <code><a href="#Overloadable.overload">overload</a></code>.
+                                </p>
+                                <dl class="heading4">
+                                    <dt id="Overloadable.dispatch">dispatch: Any</dt>
+                                    <dd>
+                                        <p>This attribute holds the dispatch.</p>
+                                    </dd>
+                                    <dt id="Overloadable.lookup">lookup: Any</dt>
+                                    <dd>
+                                        <p>This attribute holds all the overloads under their respective keys.</p>
+                                    </dd>
+                                    <dt id="Overloadable.overload">overload(key: Any = None) -> functools.partial</dt>
+                                    <dd>
+                                        This method returns a decorator 
+                                        that adds the decorated overload 
+                                        into the <code><a href="#Overloadable.lookup">lookup</a></code> 
+                                        under the given <code>key.</code>
+                                    </dd>
+                                </dl>
+                            </dd>
+                            <dt id="overloadable">overloadable</dt>
+                            <dd>
+                                <p>
+                                    This module variable is an alias for <code><a href="#Overloadable">Overloadable</a></code> included for legacy.
+                                </p>
+                            </dd>
+                        </dl>
                     </dd>
                     <dt id="example">Example</dt>
                     <dd>
-                        <pre class="block"><code>from overloadable import overloadable
+                        <pre class="block"><code>from overloadable import Overloadable
 
 class Bar:
-    def __init__(self, addon) -&gt; None:
+
+    addon: Any
+
+    def __init__(self: Self, addon: Any) -&gt; None:
         self.addon = addon
 
-    @overloadable
-    def foo(self, x):
+    @Overloadable
+    def foo(self: Self, x: Any) -> Optional[str]:
         if type(x) is int:
             return "int"
 
     @foo.overload("int")
-    def foo(self, x):
+    def foo(self: Self, x: int) -> Any:
         return x * x + self.addon
 
     @foo.overload() # key=None
-    def foo(self, x):
+    def foo(self: Self, x: str) -> str:
         return str(x)[::-1]
 
-bar = Bar(42)
+bar: Bar = Bar(42)
 print(bar.foo(1)) # prints 43
 print(bar.foo(3.14)) # prints 41.3
 print(bar.foo("baz")) # prints zab</code></pre>
