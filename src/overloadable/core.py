@@ -21,17 +21,20 @@ class Overloadable:
         self: Self, *args: Any, **kwargs: Any
     ) -> types.FunctionType | types.MethodType:
         draft: Any = self.dispatch.__get__(*args, **kwargs)
+        ans: Any
         try:
             obj: Any = draft.__self__
         except AttributeError:
-            return self._deco(draft)
+            ans = self._deco(draft)
+            return ans
         old: Callable
         try:
             old = draft.__func__
         except AttributeError:
             old = getattr(type(obj), draft.__name__)
         new: Any = self._deco(old)
-        return types.MethodType(new, obj)
+        ans = types.MethodType(new, obj)
+        return ans
 
     def __init__(self: Self, dispatch: Any) -> None:
         self.dispatch = dispatch
