@@ -1,67 +1,68 @@
-import dataclasses
 import functools
 import types
 from typing import *
 
-import tofunc
-
-__all__ = ["overloadable"]
+__all__ = ["overloadable", "Overloadable"]
 
 
-def identity(value: Any, /) -> Any:
-    return value
+class Overloadable:
 
+    __slots__ = ("dispatch", "lookup")
+    dispatch: Any
+    lookup: Any
 
-def overloadable(dispatch: Any) -> types.FunctionType:
-    return Data(dispatch).ans
-
-
-class Data:
-    def __init__(self, value: Any, /) -> None:
-        self.ans = self.makeans(value)
-
-    def ans_1(self, *args: Any, **kwargs: Any) -> Any:
-        key = self.ans.dispatch(*args, **kwargs)
-        return self.ans.lookup[key](*args, **kwargs)
-
-    def makeans(self, value: Any, /) -> Any:
-        unpack = Unpack.byValue(value)
-        ans = tofunc.tofunc(self.ans_1)
-        functools.wraps(unpack.func)(ans)
-        ans = unpack.kind(ans)
-        ans._data = self
-        ans.lookup = dict()
-        ans.dispatch = unpack.func
-        ans.overload = tofunc.tofunc(self.overload_1)
-        functools.wraps(self.overload_1)(ans.overload)
+    def __call__(self: Self, *args: Any, **kwargs: Any) -> Any:
+        key: Any = self.dispatch(*args, **kwargs)
+        value: Callable = self.lookup[key]
+        ans: Any = value(*args, **kwargs)
         return ans
 
-    def overload_1(self, key: Any = None) -> Any:
-        return Overload(ans=self.ans, key=key)
-
-
-@dataclasses.dataclass(frozen=True)
-class Overload:
-    ans: Any
-    key: Any
-
-    def __call__(self, value: Any) -> Any:
-        self.ans.lookup[self.key] = value
-        return self.ans
-
-
-@dataclasses.dataclass(frozen=True)
-class Unpack:
-    kind: Any
-    func: Any
-
-    @classmethod
-    def byValue(cls, value: Any):
+    def __get__(
+        self: Self, *args: Any, **kwargs: Any
+    ) -> types.FunctionType | types.MethodType:
+        draft: Any = self.dispatch.__get__(*args, **kwargs)
         try:
-            func = value.__func__
+            obj: Any = draft.__self__
         except AttributeError:
-            func = value
-            kind = identity
-        else:
-            kind = type(value)
-        return cls(kind=kind, func=func)
+            return self._deco(draft)
+        old: Callable
+        try:
+            old = draft.__func__
+        except AttributeError:
+            old = getattr(type(obj), draft.__name__)
+        new: Any = self._deco(old)
+        return types.MethodType(new, obj)
+
+    def __init__(self: Self, dispatch: Any) -> None:
+        self.dispatch = dispatch
+        self.lookup = dict()
+
+    def _deco(self: Self, old: Callable) -> Any:
+        return deco(old, lookup=dict(self.lookup))
+
+    def overload(self: Self, key=None) -> functools.partial:
+        return functools.partial(overload_, self, key)
+
+
+overloadable = Overloadable
+
+
+def deco(old: Callable, *, lookup: dict) -> types.FunctionType:
+    def new(*args: Any, **kwargs: Any) -> Any:
+        key: Any = old(*args, **kwargs)
+        value: Any = lookup[key]
+        ans: Any = value(*args, **kwargs)
+        return ans
+
+    ans: types.FunctionType
+    try:
+        ans = functools.wraps(old)(new)
+    except:
+        ans = new
+    return ans
+
+
+def overload_(master: Overloadable, key: Any, value: Callable, /) -> Overloadable:
+    overload(value)
+    master.lookup[key] = value
+    return master

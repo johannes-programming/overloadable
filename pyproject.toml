@@ -6,15 +6,19 @@ requires = [
 
 [project]
 authors = [
+    { email = "johannes.programming@gmail.com", name = "Johannes" },
     { email = "johannes-programming@mailfence.com", name = "Johannes" },
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
+    "Typing :: Typed",
 ]
 dependencies = [
     "tofunc>=1.0.0",
@@ -24,7 +28,7 @@ keywords = []
 name = "overloadable"
 readme = "README.rst"
 requires-python = ">=3.8"
-version = "1.0.9"
+version = "1.0.10"
 
 [project.license]
 file = "LICENSE.txt"
@@ -32,4 +36,5 @@ file = "LICENSE.txt"
 [project.urls]
 Documentation = "https://pypi.org/project/overloadable"
 Download = "https://pypi.org/project/overloadable/#files"
+Index = "https://pypi.org/project/overloadable/"
 Source = "https://github.com/johannes-programming/overloadable"
