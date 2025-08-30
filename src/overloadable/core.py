@@ -23,7 +23,7 @@ class Overloadable:
         new = self._deco(old)
         return types.MethodType(new, obj)
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self:Self, *args:Any, **kwargs:Any)->Any:
         # Direct call acts like the plain function
         key = self.original(*args, **kwargs)
         value = self.lookup[key]
@@ -40,7 +40,7 @@ class Overloadable:
 overloadable = Overloadable
 
 def deco(old, *, lookup):
-    def new(*args, **kwargs):
+    def new(*args:Any, **kwargs:Any)->Any:
         key = old(*args, **kwargs)
         value = lookup[key]
         ans = value(*args, **kwargs)
