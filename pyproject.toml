@@ -19,13 +19,15 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Typing :: Typed",
 ]
-dependencies = []
+dependencies = [
+    "datarepr>=1.0.2,<2",
+]
 description = "This projects allows overloading."
 keywords = []
 name = "overloadable"
 readme = "README.rst"
 requires-python = ">=3.11"
-version = "1.0.12"
+version = "1.0.13"
 
 [project.license]
 file = "LICENSE.txt"
