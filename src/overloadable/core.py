@@ -1,37 +1,23 @@
-import dataclasses
 import functools
 import types
 from typing import *
 
-import tofunc
-
 __all__ = ["overloadable", "Overloadable"]
 
-
-def foo(old, *, lookup):
-    def new(*args, **kwargs):
-        key = old(*args, **kwargs)
-        value = lookup[key]
-        ans = value(*args, **kwargs)
-        return ans
-
-    return new
-
-
 class Overloadable:
-    def __init__(self, original):
+    def __init__(self:Self, original:Any)->None:
         self.original = original
         self.lookup = dict()
 
-    def __get__(self, *args, **kwargs):
+    def __get__(self:Self, *args:Any, **kwargs:Any)->Any:
         ans = self.original.__get__(*args, **kwargs)
         if isinstance(ans, types.FunctionType):
-            ans = foo(ans, lookup=self.lookup)
+            ans = self._deco(ans)
             return ans
         else:
             obj = ans.__self__
             func = ans.__func__
-            func = foo(func, lookup=self.lookup)
+            func = self._deco(func)
             ans = types.MethodType(func, obj)
             return ans
 
@@ -41,19 +27,26 @@ class Overloadable:
         value = self.lookup[key]
         ans = value(*args, **kwargs)
         return ans
+    
+    def _deco(self:Self, old:Callable)->Any:
+        return deco(old, lookup=dict(self.lookup))
 
-    def overload(self, key=None):
-        return Overload(self, key)
 
-
-class Overload:
-    def __call__(self: Self, value: Any) -> Overloadable:
-        self.overloadable.lookup[self.key] = value
-        return self.overloadable
-
-    def __init__(self: Self, overloadable: Overloadable, key: Any):
-        self.overloadable = overloadable
-        self.key = key
-
+    def overload(self:Self, key=None)->functools.partial:
+        return functools.partial(overload, self, key)
 
 overloadable = Overloadable
+
+def deco(old, *, lookup):
+    def new(*args, **kwargs):
+        key = old(*args, **kwargs)
+        value = lookup[key]
+        ans = value(*args, **kwargs)
+        return ans
+
+    return new
+
+def overload(master:Overloadable, key:Any, value:Any, /)->Overloadable:
+    master.lookup[key] = value
+    return master
+
