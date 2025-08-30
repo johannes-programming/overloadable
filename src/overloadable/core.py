@@ -10,16 +10,18 @@ class Overloadable:
         self.lookup = dict()
 
     def __get__(self:Self, *args:Any, **kwargs:Any)->Any:
-        ans = self.original.__get__(*args, **kwargs)
-        if isinstance(ans, types.FunctionType):
-            ans = self._deco(ans)
-            return ans
-        else:
-            obj = ans.__self__
-            func = ans.__func__
-            func = self._deco(func)
-            ans = types.MethodType(func, obj)
-            return ans
+        draft = self.original.__get__(*args, **kwargs)
+        try:
+            obj:Any = draft.__self__
+        except AttributeError:
+            return self._deco(draft)
+        old:Callable
+        try:
+            old = draft.__func__
+        except:
+            old = getattr(type(obj), draft.__name__)
+        new = self._deco(old)
+        return types.MethodType(new, obj)
 
     def __call__(self, *args, **kwargs):
         # Direct call acts like the plain function
