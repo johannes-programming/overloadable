@@ -6,14 +6,19 @@ __all__ = ["overloadable", "Overloadable"]
 
 class Overloadable:
 
+    __slots__ = ("dispatch", "lookup")
+    dispatch:Any
+    lookup:Any
+
     def __call__(self:Self, *args:Any, **kwargs:Any)->Any:
-        # Direct call acts like the plain function
         key:Any = self.dispatch(*args, **kwargs)
         value:Callable = self.lookup[key]
         ans:Any = value(*args, **kwargs)
         return ans
 
-    def __get__(self:Self, *args:Any, **kwargs:Any)->Any:
+    def __get__(
+            self:Self, 
+            *args:Any, **kwargs:Any) -> types.FunctionType | types.MethodType:
         draft:Any = self.dispatch.__get__(*args, **kwargs)
         try:
             obj:Any = draft.__self__
@@ -34,27 +39,27 @@ class Overloadable:
     def _deco(self:Self, old:Callable)->Any:
         return deco(old, lookup=dict(self.lookup))
 
-
     def overload(self:Self, key=None)->functools.partial:
-        return functools.partial(overload, self, key)
+        return functools.partial(overload_, self, key)
 
 overloadable = Overloadable
 
-def deco(old, *, lookup):
+def deco(old:Callable, *, lookup:dict)->types.FunctionType:
     def new(*args:Any, **kwargs:Any)->Any:
-        key = old(*args, **kwargs)
-        value = lookup[key]
-        ans = value(*args, **kwargs)
+        key:Any = old(*args, **kwargs)
+        value:Any = lookup[key]
+        ans:Any = value(*args, **kwargs)
         return ans
     
-    ans:Any
+    ans:types.FunctionType
     try:
         ans = functools.wraps(old)(new)
     except:
         ans = new
     return ans
 
-def overload(master:Overloadable, key:Any, value:Callable, /)->Overloadable:
+def overload_(master:Overloadable, key:Any, value:Callable, /)->Overloadable:
+    overload(value)
     master.lookup[key] = value
     return master
 
