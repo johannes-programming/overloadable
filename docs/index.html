@@ -33,7 +33,7 @@
                                     <dd>
                                         <p>This attribute holds all the overloads under their respective keys.</p>
                                     </dd>
-                                    <dt id="Overloadable.overload">overload(key: Any = None) -> functools.partial</dt>
+                                    <dt id="Overloadable.overload">overload(key: Any = None) -&gt; functools.partial</dt>
                                     <dd>
                                         This method returns a decorator 
                                         that adds the decorated overload 
@@ -62,22 +62,44 @@ class Bar:
         self.addon = addon
 
     @Overloadable
-    def foo(self: Self, x: Any) -> Optional[str]:
+    def foo(self: Self, x: Any) -&gt; Optional[str]:
         if type(x) is int:
             return "int"
 
     @foo.overload("int")
-    def foo(self: Self, x: int) -> Any:
+    def foo(self: Self, x: int) -&gt; Any:
         return x * x + self.addon
 
     @foo.overload() # key=None
-    def foo(self: Self, x: str) -> str:
+    def foo(self: Self, x: str) -&gt; str:
         return str(x)[::-1]
 
 bar: Bar = Bar(42)
 print(bar.foo(1)) # prints 43
 print(bar.foo(3.14)) # prints 41.3
 print(bar.foo("baz")) # prints zab</code></pre>
+                            <pre class="block"><code>from overloadable import Overloadable
+
+class Bar:
+
+    @Overloadable
+    @staticmethod
+    def foo(x: Any) -&gt; int | str:
+        return type(x)
+
+    @foo.overload(int)
+    def foo(x: int) -&gt; int:
+        return x ** 2
+
+    @foo.overload(str)
+    def foo(x: str) -&gt; str:
+        return str(x)[::-1]
+
+bar: Bar = Bar()
+print(bar.foo(5)) # prints 25
+print(bar.foo("baz")) # prints zab
+print(Bar.foo(5)) # prints 25
+print(Bar.foo("baz")) # prints zab</code></pre>
                     </dd>
                     <dt id="testing">Testing</dt>
                     <dd id="testingCorpus"></dd>
