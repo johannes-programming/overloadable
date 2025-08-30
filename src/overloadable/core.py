@@ -18,7 +18,7 @@ class Overloadable:
         old:Callable
         try:
             old = draft.__func__
-        except:
+        except AttributeError:
             old = getattr(type(obj), draft.__name__)
         new = self._deco(old)
         return types.MethodType(new, obj)
