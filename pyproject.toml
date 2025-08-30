@@ -19,7 +19,9 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Typing :: Typed",
 ]
-dependencies = []
+dependencies = [
+    "datarepr",
+]
 description = "This projects allows overloading."
 keywords = []
 name = "overloadable"

@@ -1,6 +1,7 @@
 import functools
 import types
 from typing import *
+import datarepr
 
 __all__ = ["overloadable", "Overloadable"]
 
@@ -39,11 +40,18 @@ class Overloadable:
     def __init__(self: Self, dispatch: Any) -> None:
         self.dispatch = dispatch
         self.lookup = dict()
+    
+    def __repr__(self:Self)->str:
+        return datarepr.datarepr(
+            type(self).__name__, 
+            dispatch=self.dispatch, 
+            lookup=self.lookup,
+        )
 
     def _deco(self: Self, old: Callable) -> Any:
         return deco(old, lookup=dict(self.lookup))
 
-    def overload(self: Self, key=None) -> functools.partial:
+    def overload(self: Self, key:Any=None) -> functools.partial:
         return functools.partial(overload_, self, key)
 
 
