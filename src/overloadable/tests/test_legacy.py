@@ -1,6 +1,6 @@
 import unittest
 
-from overloadable import overloadable
+from overloadable.core import overloadable
 
 
 class Bar:
