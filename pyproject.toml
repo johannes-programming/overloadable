@@ -1,13 +1,12 @@
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [
-    "setuptools>=61.0.0",
+    "setuptools>=61.0",
 ]
 
 [project]
 authors = [
     { email = "johannes.programming@gmail.com", name = "Johannes" },
-    { email = "johannes-programming@mailfence.com", name = "Johannes" },
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -20,21 +19,19 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Typing :: Typed",
 ]
-dependencies = [
-    "tofunc>=1.0.0",
-]
-description = "Create an overloaded function around a core choosing function."
+dependencies = []
+description = "This projects allows overloading."
 keywords = []
 name = "overloadable"
 readme = "README.rst"
-requires-python = ">=3.8"
-version = "1.0.10"
+requires-python = ">=3.11"
+version = "1.0.11"
 
 [project.license]
 file = "LICENSE.txt"
 
 [project.urls]
-Documentation = "https://pypi.org/project/overloadable"
+Documentation = "https://pypi.org/project/overloadable/"
 Download = "https://pypi.org/project/overloadable/#files"
 Index = "https://pypi.org/project/overloadable/"
-Source = "https://github.com/johannes-programming/overloadable"
+Source = "https://github.com/johannes-programming/overloadable/"
