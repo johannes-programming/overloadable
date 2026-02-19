@@ -26,12 +26,12 @@
                     <dt id="features">Features</dt>
                     <dd>
                         <dl class="heading4" version="1.0 1.1">
-                            <dt id="Overloadable" version="1.1">class overloadable.Overloadable(dispatch: Any)</dt>
+                            <dt id="1--Overloadable" version="1.1">class overloadable.Overloadable(dispatch: Any)</dt>
                             <dd version="1.1">
                                 <p>
                                     This class is meant as a decorator for a dispatch. 
                                     Its overloads can be added 
-                                    with <code><a href="#Overloadable.overload">overload</a></code>.
+                                    with <code><a href="#1--Overloadable.overload">overload</a></code>.
                                 </p>
                                 <p>Here two examples.</p>
                                 <pre class="block"><code>from overloadable import Overloadable
@@ -88,36 +88,36 @@ print(Bar.foo("baz")) # prints zab</code></pre>
                                     <p><span>Added in version 1.1.</span></p>
                                 </div>
                                 <dl class="heading4">
-                                    <dt id="Overloadable.dispatch">dispatch: Any</dt>
+                                    <dt id="1--Overloadable.dispatch">dispatch: Any</dt>
                                     <dd>
                                         <p>This attribute holds the dispatch.</p>
                                     </dd>
-                                    <dt id="Overloadable.lookup">lookup: Any</dt>
+                                    <dt id="1--Overloadable.lookup">lookup: Any</dt>
                                     <dd>
                                         <p>This attribute holds all the overloads under their respective keys.</p>
                                     </dd>
-                                    <dt id="Overloadable.overload">overload(key: Any = None) -&gt; functools.partial</dt>
+                                    <dt id="1--Overloadable.overload">overload(key: Any = None) -&gt; functools.partial</dt>
                                     <dd>
                                         This method returns a decorator 
                                         that adds the decorated overload 
-                                        into the <code><a href="#Overloadable.lookup">lookup</a></code> 
+                                        into the <code><a href="#1--Overloadable.lookup">lookup</a></code> 
                                         under the given <code>key.</code>
                                     </dd>
                                 </dl>
                             </dd>
-                            <dt id="overloadable">overloadable.overloadable</dt>
+                            <dt id="1--overloadable">overloadable.overloadable = overloadable.Overloadable</dt>
                             <dd>
                                 <p version="1.1">
-                                    This module variable is an alias for <code><a href="#Overloadable">Overloadable</a></code> included for legacy.
+                                    This module variable is an alias for <code><a href="#1--Overloadable">Overloadable</a></code> included for legacy.
                                 </p>
                                 <div class="minor minor-changed" version="1.1">
                                     <p><span>Changed in version 1.1.</span></p>
                                 </div>
                             </dd>
+                            <dt id="1--test">overloadable.test() -> unittest.TextTestResult</dt>
+                            <dd class="testingCorpus"></dd>
                         </dl>
                     </dd>
-                    <dt id="testing">Testing</dt>
-                    <dd id="testingCorpus"></dd>
                     <dt id="license">License</dt>
                     <dd id="licenseCorpus"></dd>
                     <dt id="links">Links</dt>
