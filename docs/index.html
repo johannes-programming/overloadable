@@ -25,7 +25,7 @@
                     <dd id="installCorpus"></dd>
                     <dt id="features">Features</dt>
                     <dd>
-                        <dl class="heading4" version="1.1">
+                        <dl class="heading4" version="1.0 1.1">
                             <dt id="Overloadable" version="1.1">class overloadable.Overloadable(dispatch: Any)</dt>
                             <dd version="1.1">
                                 <p>
@@ -33,6 +33,57 @@
                                     Its overloads can be added 
                                     with <code><a href="#Overloadable.overload">overload</a></code>.
                                 </p>
+                                <p>Here two examples.</p>
+                                <pre class="block"><code>from overloadable import Overloadable
+
+class Bar:
+
+    addon: Any
+
+    def __init__(self: Self, addon: Any) -&gt; None:
+        self.addon = addon
+
+    @Overloadable
+    def foo(self: Self, x: Any) -&gt; Optional[str]:
+        if type(x) is int:
+            return "int"
+
+    @foo.overload("int")
+    def foo(self: Self, x: int) -&gt; Any:
+        return x * x + self.addon
+
+    @foo.overload() # key=None
+    def foo(self: Self, x: str) -&gt; str:
+        return str(x)[::-1]
+
+bar: Bar
+bar = Bar(42)
+print(bar.foo(1)) # prints 43
+print(bar.foo(3.14)) # prints 41.3
+print(bar.foo("baz")) # prints zab</code></pre>
+                                <pre class="block"><code>from overloadable import Overloadable
+
+class Bar:
+
+    @Overloadable
+    @staticmethod
+    def foo(x: Any) -&gt; int | str:
+        return type(x)
+
+    @foo.overload(int)
+    def foo(x: int) -&gt; int:
+        return x ** 2
+
+    @foo.overload(str)
+    def foo(x: str) -&gt; str:
+        return str(x)[::-1]
+
+bar: Bar
+bar = Bar()
+print(bar.foo(5)) # prints 25
+print(bar.foo("baz")) # prints zab
+print(Bar.foo(5)) # prints 25
+print(Bar.foo("baz")) # prints zab</code></pre>
                                 <div class="minor minor-added">
                                     <p><span>Added in version 1.1.</span></p>
                                 </div>
@@ -64,57 +115,6 @@
                                 </div>
                             </dd>
                         </dl>
-                    </dd>
-                    <dt id="example">Example</dt>
-                    <dd>
-                        <pre class="block"><code>from overloadable import Overloadable
-
-class Bar:
-
-    addon: Any
-
-    def __init__(self: Self, addon: Any) -&gt; None:
-        self.addon = addon
-
-    @Overloadable
-    def foo(self: Self, x: Any) -&gt; Optional[str]:
-        if type(x) is int:
-            return "int"
-
-    @foo.overload("int")
-    def foo(self: Self, x: int) -&gt; Any:
-        return x * x + self.addon
-
-    @foo.overload() # key=None
-    def foo(self: Self, x: str) -&gt; str:
-        return str(x)[::-1]
-
-bar: Bar = Bar(42)
-print(bar.foo(1)) # prints 43
-print(bar.foo(3.14)) # prints 41.3
-print(bar.foo("baz")) # prints zab</code></pre>
-                            <pre class="block"><code>from overloadable import Overloadable
-
-class Bar:
-
-    @Overloadable
-    @staticmethod
-    def foo(x: Any) -&gt; int | str:
-        return type(x)
-
-    @foo.overload(int)
-    def foo(x: int) -&gt; int:
-        return x ** 2
-
-    @foo.overload(str)
-    def foo(x: str) -&gt; str:
-        return str(x)[::-1]
-
-bar: Bar = Bar()
-print(bar.foo(5)) # prints 25
-print(bar.foo("baz")) # prints zab
-print(Bar.foo(5)) # prints 25
-print(Bar.foo("baz")) # prints zab</code></pre>
                     </dd>
                     <dt id="testing">Testing</dt>
                     <dd id="testingCorpus"></dd>
