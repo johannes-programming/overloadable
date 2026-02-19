@@ -15,10 +15,11 @@ class Overloadable:
 
     def __call__(self: Self, *args: Any, **kwargs: Any) -> Any:
         "This magic method implements self(*args, **kwargs)."
-        key: Any = self.dispatch(*args, **kwargs)
-        value: Callable = self.lookup[key]
-        ans: Any = value(*args, **kwargs)
-        return ans
+        key: Any
+        value: Callable
+        key = self.dispatch(*args, **kwargs)
+        value = self.lookup[key]
+        return value(*args, **kwargs)
 
     def __get__(
         self: Self,
@@ -26,21 +27,21 @@ class Overloadable:
         **kwargs: Any,
     ) -> types.FunctionType | types.MethodType:
         "This magic method implements getting as an attribute from a class or an object."
-        draft: Any = self.dispatch.__get__(*args, **kwargs)
-        ans: Any
-        try:
-            obj: Any = draft.__self__
-        except AttributeError:
-            ans = self._deco(draft)
-            return ans
+        draft: Any
+        new: Any
+        obj: Any
         old: Callable
+        draft = self.dispatch.__get__(*args, **kwargs)
+        try:
+            obj = draft.__self__
+        except AttributeError:
+            return self._deco(draft)
         try:
             old = draft.__func__
         except AttributeError:
             old = getattr(type(obj), draft.__name__)
-        new: Any = self._deco(old)
-        ans = types.MethodType(new, obj)
-        return ans
+        new = self._deco(old)
+        return types.MethodType(new, obj)
 
     def __init__(self: Self, dispatch: Any) -> None:
         "This magic method sets up self."
@@ -69,17 +70,16 @@ overloadable = Overloadable
 def deco(old: Callable, *, lookup: dict) -> types.FunctionType:
     def new(*args: Any, **kwargs: Any) -> Any:
         "This function implements overloaded calling. This docstring should be overwritten."
-        key: Any = old(*args, **kwargs)
-        value: Any = lookup[key]
-        ans: Any = value(*args, **kwargs)
-        return ans
+        key: Any
+        value: Any
+        key = old(*args, **kwargs)
+        value = lookup[key]
+        return value(*args, **kwargs)
 
-    ans: types.FunctionType
     try:
-        ans = functools.wraps(old)(new)
-    except:
-        ans = new
-    return ans
+        return functools.wraps(old)(new)
+    except Exception:
+        return new
 
 
 def overload_(

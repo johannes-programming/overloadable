@@ -3,6 +3,8 @@ from typing import *
 
 from overloadable.core import overloadable
 
+__all__ = ["TestBar"]
+
 
 class Bar:
 

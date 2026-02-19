@@ -3,6 +3,8 @@ from typing import *
 
 from overloadable.core import *
 
+__all__ = ["TestBar"]
+
 
 @Overloadable
 def hello(x: Any) -> type:

@@ -3,6 +3,8 @@ from typing import *
 
 from overloadable.core import Overloadable
 
+__all__ = ["TestBar"]
+
 
 class Bar:
 
@@ -22,7 +24,8 @@ class Bar:
 
 class TestBar(unittest.TestCase):
     def test_foo(self: Self) -> None:
-        bar: Bar = Bar()
+        bar: Bar
+        bar = Bar()
         self.assertEqual(bar.foo(5), 25)
         self.assertEqual(bar.foo("baz"), "zab")
         self.assertEqual(Bar.foo(5), 25)
