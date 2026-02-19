@@ -28,12 +28,12 @@ def overloadable(
     @functools.wraps(func)
     def new(*args, **kwargs) -> Any:
         key = func(*args, **kwargs)
-        value = holder._data.lookup[key]
+        value = holder._data.registry[key]
         ans = value(*args, **kwargs)
         return ans
 
     holder._data = new
-    new.lookup = dict()
+    new.registry = dict()
     new.overload = functools.partial(
         overloadtool,
         bind=bind,
@@ -50,7 +50,7 @@ def overloaddecorator(
     data: Any,
     key: Hashable,
 ) -> Any:
-    data.lookup[key] = old
+    data.registry[key] = old
     overload(bind(old))
     return data
 
