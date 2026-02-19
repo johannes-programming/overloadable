@@ -3,6 +3,8 @@ from typing import *
 
 from overloadable.core import *
 
+__all__ = ["TestBar"]
+
 
 class Example:
     def __init__(self: Self, addon: str = "hi") -> None:
