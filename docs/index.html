@@ -4,16 +4,19 @@
         <title>overloadable</title>
     </head>
     <body>
-        <div id="top"></div>
-        <div id="overview">
-            <h2>Overview</h2>
-            <p>Create an overloaded function around a core choosing function.</p>
-        </div>
-        <div id="install"></div>
-        <div id="implement">
-            <h2>Implementation</h2>
-            <pre><code>
-import functools
+        <dl id="top" class="heading0">
+            <dt><a>overloadable</a></dt>
+            <dd>
+                <dl class="heading1">
+                    <dt id="intro">Introduction</dt>
+                    <dd>
+                        <p>Create an overloaded function around a core choosing function.</p>
+                    </dd>
+                    <dt id="install">Installation</dt>
+                    <dd id="installCorpus"></dd>
+                    <dt id="implement">Implementation</dt>
+                    <dd>
+                        <pre class="block"><code>import functools
 from typing import *
 
 __all__ = ["overloadable"]
@@ -73,14 +76,11 @@ def overloadtool(
         overloaddecorator,
         key=key,
         **kwargs,
-    )
-    
-</code></pre>
-        </div>
-        <div id="example">
-            <h2>Example</h2>
-            <pre><code>
-from overloadable import overloadable
+    )</code></pre>
+                    </dd>
+                    <dt id="example">Example</dt>
+                    <dd>
+                        <pre class="block"><code>from overloadable import overloadable
 
 class Bar:
     def __init__(self, addon) -&gt; None:
@@ -102,17 +102,27 @@ class Bar:
 bar = Bar(42)
 print(bar.foo(1)) # prints 43
 print(bar.foo(3.14)) # prints 41.3
-print(bar.foo("baz")) # prints zab
-
-</code></pre>
-        </div>
-        <div id="testing"></div>
-        <div id="license"></div>
-        <div id="links"></div>
-        <div id="credits"></div>
+print(bar.foo("baz")) # prints zab</code></pre>
+                    </dd>
+                    <dt id="testing">Testing</dt>
+                    <dd id="testingCorpus"></dd>
+                    <dt id="license">License</dt>
+                    <dd id="licenseCorpus"></dd>
+                    <dt id="links">Links</dt>
+                    <dd id="linksCorpus"></dd>
+                    <dt id="impressum">Impressum</dt>
+                    <dd id="impressumCorpus"></dd>
+                </dl>
+            </dd>
+        </dl>
     </body>
-        <script src="https://www.johannes-programming.online/script.js"></script>
-        <script>
-            setupBasicProject();
-        </script>
+    <script src="https://www.johannes-programming.online/script.js"></script>
+    <script>
+        setupInstallCorpus("overloadable");
+        setupTestingCorpus("overloadable");
+        setupLicenseCorpus("overloadable");
+        setupLinksCorpus("overloadable");
+        setupImpressumCorpus("overloadable");
+        addMetaAndLinkTags();
+    </script>
 </html>
