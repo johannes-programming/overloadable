@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [
-    "setuptools>=61.0",
+    "setuptools>=64.0",
 ]
 
 [project]
@@ -27,7 +27,7 @@ keywords = []
 name = "overloadable"
 readme = "README.rst"
 requires-python = ">=3.11"
-version = "1.0.14"
+version = "1.0.15"
 
 [project.license]
 file = "LICENSE.txt"
