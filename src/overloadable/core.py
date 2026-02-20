@@ -3,6 +3,7 @@ import types
 from typing import *
 
 import datarepr
+import setdoc
 
 __all__ = ["overloadable", "Overloadable"]
 
@@ -43,13 +44,13 @@ class Overloadable:
         new = self._deco(old)
         return types.MethodType(new, obj)
 
+    @setdoc.basic
     def __init__(self: Self, dispatch: Any) -> None:
-        "This magic method sets up self."
         self.dispatch = dispatch
         self.lookup = dict()
 
+    @setdoc.basic
     def __repr__(self: Self) -> str:
-        "This magic method implements repr(self)."
         return datarepr.datarepr(
             type(self).__name__,
             dispatch=self.dispatch,
