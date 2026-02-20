@@ -29,7 +29,8 @@ class Example:
 
 class TestBar(unittest.TestCase):
     def test_foo(self: Self) -> None:
-        example: Example = Example()
+        example: Example
+        example = Example()
         self.assertEqual("hihihihihi", example.hello(5))
         self.assertEqual("worldhi", example.hello("world"))
         self.assertEqual(False, example.hello(True))
