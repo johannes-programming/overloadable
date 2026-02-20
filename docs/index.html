@@ -33,8 +33,36 @@
                                     Its overloads can be added 
                                     with <code><a href="#1--Overloadable.overload">overload</a></code>.
                                 </p>
-                                <p>Here two examples.</p>
-                                <pre class="block"><code>from overloadable import Overloadable
+                                <div class="minor minor-added">
+                                    <p><span>Added in version 1.1.</span></p>
+                                </div>
+                                <dl class="heading4">
+                                    <dt>__slots__ = ("dispatch", "lookup")</dt>
+                                    <dd></dd>
+                                    <dt>__call__(self: Self, *args: Any, **kwargs: Any) -> Any</dt>
+                                    <dd></dd>
+                                    <dt id="1--Overloadable.dispatch">dispatch: Any</dt>
+                                    <dd>
+                                        <p>This attribute holds the dispatch.</p>
+                                    </dd>
+                                    <dt>__get__(*args: Any, **kwargs: Any) -> types.FunctionType | types.MethodType</dt>
+                                    <dd></dd>
+                                    <dt>__repr__(self: Self) -> str</dt>
+                                    <dd></dd>
+                                    <dt id="1--Overloadable.lookup">lookup: Any</dt>
+                                    <dd>
+                                        <p>This attribute holds all the overloads under their respective keys.</p>
+                                    </dd>
+                                    <dt id="1--Overloadable.overload">overload(key: Any = None) -&gt; functools.partial</dt>
+                                    <dd>
+                                        <p>
+                                            This method returns a decorator 
+                                            that adds the decorated overload 
+                                            into the <code><a href="#1--Overloadable.lookup">lookup</a></code> 
+                                            under the given <code>key.</code>
+                                        </p>
+                                        <p>Here two examples.</p>
+                                        <pre class="block"><code>from overloadable import Overloadable
 
 class Bar:
 
@@ -61,7 +89,7 @@ bar = Bar(42)
 print(bar.foo(1)) # prints 43
 print(bar.foo(3.14)) # prints 41.3
 print(bar.foo("baz")) # prints zab</code></pre>
-                                <pre class="block"><code>from overloadable import Overloadable
+                                        <pre class="block"><code>from overloadable import Overloadable
 
 class Bar:
 
@@ -84,24 +112,6 @@ print(bar.foo(5)) # prints 25
 print(bar.foo("baz")) # prints zab
 print(Bar.foo(5)) # prints 25
 print(Bar.foo("baz")) # prints zab</code></pre>
-                                <div class="minor minor-added">
-                                    <p><span>Added in version 1.1.</span></p>
-                                </div>
-                                <dl class="heading4">
-                                    <dt id="1--Overloadable.dispatch">dispatch: Any</dt>
-                                    <dd>
-                                        <p>This attribute holds the dispatch.</p>
-                                    </dd>
-                                    <dt id="1--Overloadable.lookup">lookup: Any</dt>
-                                    <dd>
-                                        <p>This attribute holds all the overloads under their respective keys.</p>
-                                    </dd>
-                                    <dt id="1--Overloadable.overload">overload(key: Any = None) -&gt; functools.partial</dt>
-                                    <dd>
-                                        This method returns a decorator 
-                                        that adds the decorated overload 
-                                        into the <code><a href="#1--Overloadable.lookup">lookup</a></code> 
-                                        under the given <code>key.</code>
                                     </dd>
                                 </dl>
                             </dd>
@@ -141,7 +151,7 @@ print(Bar.foo("baz")) # prints zab</code></pre>
             setupLinksCorpus,
             setupTestingCorpus,
             addMetaAndLinkTags,
-        } from "https://www.johannes-programming.online/script.js";
+        } from "https://www.johannes-programming.online/main.js";
         setupImpressumCorpus("overloadable");
         setupInstallCorpus("overloadable");
         setupLicenseCorpus("overloadable");
