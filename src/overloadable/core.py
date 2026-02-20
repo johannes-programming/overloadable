@@ -4,11 +4,12 @@ from typing import *
 
 import datarepr
 import setdoc
+from copyable import Copyable
 
 __all__ = ["overloadable", "Overloadable"]
 
 
-class Overloadable:
+class Overloadable(Copyable):
 
     __slots__ = ("dispatch", "lookup")
     dispatch: Any
@@ -59,6 +60,13 @@ class Overloadable:
 
     def _deco(self: Self, old: Callable) -> Any:
         return deco(old, lookup=dict(self.lookup))
+
+    @setdoc.basic
+    def copy(self: Self) -> Self:
+        ans: Self
+        ans = type(self)(self.dispatch)
+        ans.lookup = self.lookup
+        return ans
 
     def overload(self: Self, key: Any = None) -> functools.partial:
         "This method returns a decorator for overloading."
