@@ -27,7 +27,8 @@ class Example:
 
 class TestBar(unittest.TestCase):
     def test_foo(self: Self) -> None:
-        example: Example = Example()
+        example: Example
+        example = Example()
         self.assertEqual(25, example.hello(5))
         self.assertEqual("dlrow", example.hello("world"))
         self.assertEqual(7, example.hello(6.7))
