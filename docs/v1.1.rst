@@ -1,0 +1,158 @@
+Introduction
+------------
+
+This project allows to create an overloaded function around a core choosing function.
+
+Installation
+------------
+
+To install overloadable, you can use pip. Open your terminal and run:
+
+.. code-block:: shell
+
+    pip install overloadable
+
+Features
+--------
+
+``class overloadable.Overloadable(dispatch: Any)``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This class is meant as a decorator for a dispatch. Its overloads can be added with overload.
+
+.. container:: versionadded
+
+    **Added in version 1.1:** This class was previously named overloadable.
+
+``__hash__ = None``
+^^^^^^^^^^^^^^^^^^^
+
+``__slots__ = ("dispatch", "lookup")``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``__call__(self: Self, *args: Any, **kwargs: Any) -> Any``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``__get__(*args: Any, **kwargs: Any) -> types.FunctionType | types.MethodType``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``__repr__(self: Self) -> str``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``copy() -> Self``
+^^^^^^^^^^^^^^^^^^
+
+``dispatch: Any``
+^^^^^^^^^^^^^^^^^
+
+This attribute holds the dispatch.
+
+``lookup: Any``
+^^^^^^^^^^^^^^^
+
+This attribute holds all the overloads under their respective keys.
+
+``overload(key: Any = None) -> functools.partial``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This method returns a decorator that adds the decorated overload into the lookup under the given key.
+
+Here two examples.
+
+.. code-block:: python
+    
+    from overloadable import Overloadable
+
+    class Bar:
+
+        addon: Any
+
+        def __init__(self: Self, addon: Any) -> None:
+            self.addon = addon
+
+        @Overloadable
+        def foo(self: Self, x: Any) -> Optional[str]:
+            if type(x) is int:
+                return "int"
+
+        @foo.overload("int")
+        def foo(self: Self, x: int) -> Any:
+            return x * x + self.addon
+
+        @foo.overload() # key=None
+        def foo(self: Self, x: str) -> str:
+            return str(x)[::-1]
+
+    bar: Bar
+    bar = Bar(42)
+    print(bar.foo(1)) # prints 43
+    print(bar.foo(3.14)) # prints 41.3
+    print(bar.foo("baz")) # prints zab
+
+.. code-block:: python
+
+    from overloadable import Overloadable
+
+    class Bar:
+
+        @Overloadable
+        @staticmethod
+        def foo(x: Any) -> int | str:
+            return type(x)
+
+        @foo.overload(int)
+        def foo(x: int) -> int:
+            return x ** 2
+
+        @foo.overload(str)
+        def foo(x: str) -> str:
+            return str(x)[::-1]
+
+    bar: Bar
+    bar = Bar()
+    print(bar.foo(5)) # prints 25
+    print(bar.foo("baz")) # prints zab
+    print(Bar.foo(5)) # prints 25
+    print(Bar.foo("baz")) # prints zab
+
+``overloadable.overloadable = overloadable.Overloadable``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This module variable is an alias for Overloadable included for legacy.
+
+.. container:: versionchanged
+    
+    **Changed in version 1.1.**
+
+``overloadable.test() -> unittest.TextTestResult``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This project can be tested through its test function.
+
+.. code-block:: python
+
+    import overloadable
+    overloadable.test()
+
+License
+-------
+
+This project is licensed under the MIT License.
+
+Links
+-----
+
+- Download: https://pypi.org/project/overloadable/#files
+- Index: https://pypi.org/project/overloadable/
+- Source: https://github.com/johannes-programming/overloadable/
+- Website: https://overloadable.johannes-programming.online/
+
+Impressum
+---------
+
+**Johannes Programming**
+
+- Name: Johannes
+- Email: johannes.programming@gmail.com
+- Homepage: https://www.johannes-programming.online/
+- Gravatar: https://www.johannes-programming.fyi/
