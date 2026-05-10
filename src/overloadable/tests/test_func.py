@@ -1,5 +1,5 @@
 import unittest
-from typing import *
+from typing import Any, Self
 
 from overloadable.core.Overloadable import Overloadable
 
@@ -11,12 +11,12 @@ def hello(x: Any) -> type:
     return type(x)
 
 
-@hello.overload(int)
+@hello.overload(int)  # type: ignore[no-redef]
 def hello(x: int) -> int:
     return x**2
 
 
-@hello.overload(str)
+@hello.overload(str)  # type: ignore[no-redef]
 def hello(x: str) -> str:
     return x[::-1]
 

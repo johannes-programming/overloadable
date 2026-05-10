@@ -1,6 +1,8 @@
 import functools
+import inspect
 import types
-from typing import *
+from collections.abc import Callable
+from typing import Any, ParamSpec, Self, TypeVar, overload
 
 import datarepr
 import setdoc
@@ -73,7 +75,7 @@ class Overloadable(Copyable):
         return functools.partial(overload_, self, key)
 
 
-def deco(old: Callable, *, lookup: dict) -> types.FunctionType:
+def deco(old: Callable, *, lookup: dict) -> Callable:
     def new(*args: Any, **kwargs: Any) -> Any:
         "This function implements overloaded calling. This docstring should be overwritten."
         key: Any

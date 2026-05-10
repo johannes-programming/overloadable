@@ -14,15 +14,15 @@ class Example:
     def hello(self: Self, x: Any) -> type:
         return type(x)
 
-    @hello.overload(int)
+    @hello.overload(int)  # type: ignore[no-redef]
     def hello(self: Self, x: int) -> str:
         return self.addon * x
 
-    @hello.overload(str)
+    @hello.overload(str)  # type: ignore[no-redef]
     def hello(self: Self, x: str) -> str:
         return x + self.addon
 
-    @hello.overload(bool)
+    @hello.overload(bool)  # type: ignore[no-redef]
     def hello(self: Self, x: bool) -> bool:
         return not x
 

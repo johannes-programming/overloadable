@@ -1,5 +1,5 @@
 import unittest
-from typing import *
+from typing import Any, Self
 
 from overloadable.core.Overloadable import Overloadable
 
@@ -13,11 +13,11 @@ class Bar:
     def foo(x: Any) -> int | str:
         return type(x)
 
-    @foo.overload(int)
+    @foo.overload(int)  # type: ignore[no-redef]
     def foo(x: int) -> int:
         return x**2
 
-    @foo.overload(str)
+    @foo.overload(str)  # type: ignore[no-redef]
     def foo(x: str) -> str:
         return str(x)[::-1]
 

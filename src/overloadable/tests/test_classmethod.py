@@ -1,5 +1,5 @@
 import unittest
-from typing import *
+from typing import Any, Self
 
 from overloadable.core.Overloadable import Overloadable
 
@@ -14,15 +14,15 @@ class Example:
     def hello(cls: type, x: Any) -> type:
         return type(x)
 
-    @hello.overload(int)
+    @hello.overload(int)  # type: ignore[no-redef]
     def hello(cls: type, x: int) -> int:
         return x**2
 
-    @hello.overload(str)
+    @hello.overload(str)  # type: ignore[no-redef]
     def hello(cls: type, x: str) -> str:
         return cls.ref + x
 
-    @hello.overload(float)
+    @hello.overload(float)  # type: ignore[no-redef]
     def hello(cls: type, x: float) -> int:
         return round(x)
 
