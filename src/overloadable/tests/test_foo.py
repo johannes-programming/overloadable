@@ -1,15 +1,13 @@
 import unittest
-from typing import *
+from typing import Any, Optional, Self
 
 from overloadable.core import overloadable
 
 
 class Bar:
-
-    addon: Any
-
     def __init__(self: Self, addon: Any) -> None:
-        self.addon = addon
+
+        self.addon: Any = addon
 
     @overloadable
     def foo(self: Self, x: Any) -> Optional[str]:
@@ -17,24 +15,24 @@ class Bar:
             return "int"
 
     @foo.overload("int")
-    def foo(self: Self, x: int) -> Any:
+    def foo(self: Self, x: Any) -> Any:
         return x * x + self.addon
 
     @foo.overload()  # key=None
-    def foo(self: Self, x: Any) -> str:
+    def foo(self: Self, x: Any) -> Any:
         return str(x)[::-1]
 
     @overloadable
     @classmethod
-    def baz(cls: type, x: Any) -> bool:
+    def baz(cls: type[Self], x: Any) -> bool:
         return hasattr(x, "__iter__")
 
     @baz.overload(True)
-    def baz(cls: type, x: Iterable) -> list:
+    def baz(cls: type[Self], x: Any) -> list[Any]:
         return list(x)[::-1]
 
     @baz.overload(False)
-    def baz(cls: type, x: Any) -> str:
+    def baz(cls: type[Self], x: Any) -> str:
         return cls.__name__ + " " + str(x)
 
     @overloadable
@@ -55,13 +53,15 @@ class Bar:
 
 class TestBar(unittest.TestCase):
     def test_foo(self: Self) -> None:
-        bar: Bar = Bar(42)
+        bar: Bar
+        bar = Bar(42)
         self.assertEqual(bar.foo(1), 43)
         self.assertEqual(bar.foo(3.14), "41.3")
         self.assertEqual(bar.foo("baz"), "zab")
 
     def test_baz(self: Self) -> None:
-        bar: Bar = Bar(42)
+        bar: Bar
+        bar = Bar(42)
         self.assertEqual(bar.baz({42}), [42])
         self.assertEqual(bar.baz("42"), ["2", "4"])
         self.assertEqual(bar.baz(3.14), "Bar 3.14")

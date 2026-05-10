@@ -1,7 +1,7 @@
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = [
-    "setuptools>=64.0",
+    "setuptools>=77.0",
 ]
 
 [project]
@@ -11,29 +11,28 @@ authors = [
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Typing :: Typed",
 ]
 dependencies = [
-    "datarepr>=1.0.2,<2",
+    "tofunc>=1.0,<2",
 ]
-description = "This projects allows overloading."
+description = "This project allows creating an overloaded function around a core choosing function."
 keywords = []
+license = "MIT"
+license-files = [
+    "LICENSE.txt",
+]
 name = "overloadable"
 readme = "README.rst"
 requires-python = ">=3.11"
-version = "1.0.15"
-
-[project.license]
-file = "LICENSE.txt"
+version = "1.0.20"
 
 [project.urls]
+Documentation = "https://pypi.org/project/overloadable"
 Download = "https://pypi.org/project/overloadable/#files"
 Index = "https://pypi.org/project/overloadable/"
 Source = "https://github.com/johannes-programming/overloadable/"
-Website = "https://overloadable.johannes-programming.online/"
