@@ -1,7 +1,7 @@
 import unittest
 from typing import *
 
-from overloadable.core import overloadable
+from overloadable.core.Overloadable import Overloadable
 
 __all__ = ["TestBar"]
 
@@ -13,7 +13,7 @@ class Bar:
     def __init__(self: Self, addon: Any) -> None:
         self.addon = addon
 
-    @overloadable
+    @Overloadable
     def foo(self: Self, x: Any) -> Optional[str]:
         if type(x) is int:
             return "int"
@@ -26,7 +26,7 @@ class Bar:
     def foo(self: Self, x: Any) -> str:
         return str(x)[::-1]
 
-    @overloadable
+    @Overloadable
     @classmethod
     def baz(cls: type, x: Any) -> bool:
         return hasattr(x, "__iter__")
@@ -39,7 +39,7 @@ class Bar:
     def baz(cls: type, x: Any) -> str:
         return cls.__name__ + " " + str(x)
 
-    @overloadable
+    @Overloadable
     @staticmethod
     def qux(x: Any) -> bool:
         return isinstance(x, int)

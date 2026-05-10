@@ -6,7 +6,7 @@ import datarepr
 import setdoc
 from copyable import Copyable
 
-__all__ = ["overloadable", "Overloadable"]
+__all__ = ["Overloadable"]
 
 
 class Overloadable(Copyable):
@@ -71,9 +71,6 @@ class Overloadable(Copyable):
     def overload(self: Self, key: Any = None) -> functools.partial:
         "This method returns a decorator for overloading."
         return functools.partial(overload_, self, key)
-
-
-overloadable = Overloadable
 
 
 def deco(old: Callable, *, lookup: dict) -> types.FunctionType:

@@ -1,7 +1,7 @@
 import unittest
 from typing import *
 
-from overloadable.core import Overloadable
+from overloadable.core.Overloadable import Overloadable
 
 __all__ = ["TestBar"]
 
