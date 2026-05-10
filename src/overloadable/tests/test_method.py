@@ -1,14 +1,16 @@
 import unittest
 from typing import *
 
-from overloadable.core import *
+from overloadable.core.overloadable import overloadable
+
+__all__ = ["TestBar"]
 
 
 class Example:
     def __init__(self: Self, addon: str = "hi") -> None:
         self.addon = addon
 
-    @Overloadable
+    @overloadable
     def hello(self: Self, x: Any) -> type:
         return type(x)
 
@@ -27,7 +29,8 @@ class Example:
 
 class TestBar(unittest.TestCase):
     def test_foo(self: Self) -> None:
-        example: Example = Example()
+        example: Example
+        example = Example()
         self.assertEqual("hihihihihi", example.hello(5))
         self.assertEqual("worldhi", example.hello("world"))
         self.assertEqual(False, example.hello(True))

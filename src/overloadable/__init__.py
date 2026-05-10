@@ -1,2 +1,1 @@
-from overloadable.core import *
-from overloadable.tests import *
+from overloadable.core.overloadable import overloadable

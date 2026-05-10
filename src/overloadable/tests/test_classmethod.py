@@ -1,13 +1,15 @@
 import unittest
 from typing import *
 
-from overloadable.core import *
+from overloadable.core.overloadable import overloadable
+
+__all__ = ["TestBar"]
 
 
 class Example:
     ref = "hi"
 
-    @Overloadable
+    @overloadable
     @classmethod
     def hello(cls: type, x: Any) -> type:
         return type(x)
@@ -27,7 +29,8 @@ class Example:
 
 class TestBar(unittest.TestCase):
     def test_foo(self: Self) -> None:
-        example: Example = Example()
+        example: Example
+        example = Example()
         self.assertEqual(25, example.hello(5))
         self.assertEqual("hiworld", example.hello("world"))
         self.assertEqual(7, example.hello(6.7))

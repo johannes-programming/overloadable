@@ -1,7 +1,9 @@
 import unittest
 from typing import *
 
-from overloadable.core import overloadable
+from overloadable.core.overloadable import overloadable
+
+__all__ = ["TestBar"]
 
 
 class Bar:
@@ -54,14 +56,9 @@ class Bar:
 
 
 class TestBar(unittest.TestCase):
-    def test_foo(self: Self) -> None:
-        bar: Bar = Bar(42)
-        self.assertEqual(bar.foo(1), 43)
-        self.assertEqual(bar.foo(3.14), "41.3")
-        self.assertEqual(bar.foo("baz"), "zab")
-
     def test_baz(self: Self) -> None:
-        bar: Bar = Bar(42)
+        bar: Bar
+        bar = Bar(42)
         self.assertEqual(bar.baz({42}), [42])
         self.assertEqual(bar.baz("42"), ["2", "4"])
         self.assertEqual(bar.baz(3.14), "Bar 3.14")
@@ -71,6 +68,13 @@ class TestBar(unittest.TestCase):
         self.assertEqual(Bar.baz(x={42}), [42])
         self.assertEqual(Bar.baz(x="42"), ["2", "4"])
         self.assertEqual(Bar.baz(x=3.14), "Bar 3.14")
+
+    def test_foo(self: Self) -> None:
+        bar: Bar
+        bar = Bar(42)
+        self.assertEqual(bar.foo(1), 43)
+        self.assertEqual(bar.foo(3.14), "41.3")
+        self.assertEqual(bar.foo("baz"), "zab")
 
     def test_qux(self: Self) -> None:
         self.assertEqual(Bar.qux(5), "Odd")

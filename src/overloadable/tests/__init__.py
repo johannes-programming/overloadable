@@ -4,8 +4,10 @@ __all__ = ["test"]
 
 
 def test() -> unittest.TextTestResult:
-    loader: unittest.TestLoader = unittest.TestLoader()
-    tests: unittest.TestSuite = loader.discover(start_dir="overloadable.tests")
-    runner: unittest.TextTestRunner = unittest.TextTestRunner()
-    result: unittest.TextTestResult = runner.run(tests)
-    return result
+    loader: unittest.TestLoader
+    suite: unittest.TestSuite
+    runner: unittest.TextTestRunner
+    loader = unittest.TestLoader()
+    suite = loader.discover(start_dir="overloadable.tests")
+    runner = unittest.TextTestRunner()
+    return runner.run(suite)

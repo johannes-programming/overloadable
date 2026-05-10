@@ -1,12 +1,14 @@
 import unittest
 from typing import *
 
-from overloadable.core import Overloadable
+from overloadable.core.overloadable import overloadable
+
+__all__ = ["TestBar"]
 
 
 class Bar:
 
-    @Overloadable
+    @overloadable
     @staticmethod
     def foo(x: Any) -> int | str:
         return type(x)
@@ -22,7 +24,8 @@ class Bar:
 
 class TestBar(unittest.TestCase):
     def test_foo(self: Self) -> None:
-        bar: Bar = Bar()
+        bar: Bar
+        bar = Bar()
         self.assertEqual(bar.foo(5), 25)
         self.assertEqual(bar.foo("baz"), "zab")
         self.assertEqual(Bar.foo(5), 25)

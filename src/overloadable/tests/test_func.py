@@ -1,10 +1,12 @@
 import unittest
 from typing import *
 
-from overloadable.core import *
+from overloadable.core.overloadable import overloadable
+
+__all__ = ["TestBar"]
 
 
-@Overloadable
+@overloadable
 def hello(x: Any) -> type:
     return type(x)
 
