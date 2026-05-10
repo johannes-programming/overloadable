@@ -1,1 +1,1 @@
-from overloadable.core import overloadable
+from overloadable.core.overloadable import overloadable

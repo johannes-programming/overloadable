@@ -1,13 +1,17 @@
 import unittest
-from typing import Any, Optional, Self
+from typing import *
 
-from overloadable.core import overloadable
+from overloadable.core.overloadable import overloadable
+
+__all__ = ["TestBar"]
 
 
 class Bar:
-    def __init__(self: Self, addon: Any) -> None:
 
-        self.addon: Any = addon
+    addon: Any
+
+    def __init__(self: Self, addon: Any) -> None:
+        self.addon = addon
 
     @overloadable
     def foo(self: Self, x: Any) -> Optional[str]:
@@ -15,24 +19,24 @@ class Bar:
             return "int"
 
     @foo.overload("int")
-    def foo(self: Self, x: Any) -> Any:
+    def foo(self: Self, x: int) -> Any:
         return x * x + self.addon
 
     @foo.overload()  # key=None
-    def foo(self: Self, x: Any) -> Any:
+    def foo(self: Self, x: Any) -> str:
         return str(x)[::-1]
 
     @overloadable
     @classmethod
-    def baz(cls: type[Self], x: Any) -> bool:
+    def baz(cls: type, x: Any) -> bool:
         return hasattr(x, "__iter__")
 
     @baz.overload(True)
-    def baz(cls: type[Self], x: Any) -> list[Any]:
+    def baz(cls: type, x: Iterable) -> list:
         return list(x)[::-1]
 
     @baz.overload(False)
-    def baz(cls: type[Self], x: Any) -> str:
+    def baz(cls: type, x: Any) -> str:
         return cls.__name__ + " " + str(x)
 
     @overloadable
@@ -52,13 +56,6 @@ class Bar:
 
 
 class TestBar(unittest.TestCase):
-    def test_foo(self: Self) -> None:
-        bar: Bar
-        bar = Bar(42)
-        self.assertEqual(bar.foo(1), 43)
-        self.assertEqual(bar.foo(3.14), "41.3")
-        self.assertEqual(bar.foo("baz"), "zab")
-
     def test_baz(self: Self) -> None:
         bar: Bar
         bar = Bar(42)
@@ -71,6 +68,13 @@ class TestBar(unittest.TestCase):
         self.assertEqual(Bar.baz(x={42}), [42])
         self.assertEqual(Bar.baz(x="42"), ["2", "4"])
         self.assertEqual(Bar.baz(x=3.14), "Bar 3.14")
+
+    def test_foo(self: Self) -> None:
+        bar: Bar
+        bar = Bar(42)
+        self.assertEqual(bar.foo(1), 43)
+        self.assertEqual(bar.foo(3.14), "41.3")
+        self.assertEqual(bar.foo("baz"), "zab")
 
     def test_qux(self: Self) -> None:
         self.assertEqual(Bar.qux(5), "Odd")
