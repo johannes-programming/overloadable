@@ -3,6 +3,10 @@ Introduction
 
 This project allows to create an overloaded function around a core choosing function.
 
+.. container:: warning
+
+    **Warning:** The minor version ``1.0`` of ``datahold`` has reached end-of-life.
+
 Installation
 ------------
 

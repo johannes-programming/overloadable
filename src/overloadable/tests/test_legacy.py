@@ -57,13 +57,15 @@ class Bar:
 
 class TestBar(unittest.TestCase):
     def test_foo(self: Self) -> None:
-        bar: Bar = Bar(42)
+        bar: Bar
+        bar = Bar(42)
         self.assertEqual(bar.foo(1), 43)
         self.assertEqual(bar.foo(3.14), "41.3")
         self.assertEqual(bar.foo("baz"), "zab")
 
     def test_baz(self: Self) -> None:
-        bar: Bar = Bar(42)
+        bar: Bar
+        bar = Bar(42)
         self.assertEqual(bar.baz({42}), [42])
         self.assertEqual(bar.baz("42"), ["2", "4"])
         self.assertEqual(bar.baz(3.14), "Bar 3.14")
